@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MazeGenerator
+namespace MazeGeneratorLib
 {
     internal static class MazeHandler
     {
         public static IMaze Maze { get; private set; }
 
-        internal static bool TrapCheck(IRandomGenerator random, int roomId)
+        /// <summary>
+        /// Checks wether the treasure hunter gets injured in a room.
+        /// </summary>
+        /// <param name="random">A random number generator.</param>
+        /// <param name="roomId">ID of the room.</param>
+        /// <returns></returns>
+        public static bool TrapCheck(IRandomGenerator random, IMaze maze, int roomId)
         {
-            bool injured = random.Generate() < Maze.Rooms[roomId].BehaviourThreshold;
+            bool injured = random.Generate() > maze.Rooms[roomId].BehaviourThreshold;
 
-            if (injured) Maze.Rooms[roomId].Description += $" {Maze.Rooms[roomId].Behaviour}";
+            if (injured) maze.Rooms[roomId].Description += $" {maze.Rooms[roomId].Behaviour}";
             return injured;
         }
 
@@ -23,7 +29,7 @@ namespace MazeGenerator
         /// <param name="size">Width and height of maze dimensions.</param>
         public static void NewMaze(MazeType mazeType, int size)
         {
-            Maze = MazeFactory.Create(new RandomGenerator(), mazeType, size);
+            Maze = new MazeFactory().Create(new RandomGenerator(), mazeType, size);
         }
 
         /// <summary>
@@ -32,43 +38,44 @@ namespace MazeGenerator
         /// <param name="currentIndex">Index of the current room.</param>
         /// <param name="direction">Cardinal direction to move in; 'N', 'E', 'S' or 'W'.</param>
         /// <returns>NULL if edge of the maze traversed, index of the adjacent room otherwise.</returns>
-        public static int? TraverseMaze(int currentIndex, char direction)
+        public static int? TraverseMaze(IMaze maze, int currentIndex, char direction)
         {
             switch (direction.ToString().ToUpper())
             {
                 case "N":
-                    return MoveNorth(currentIndex);
+                    return MoveNorth(maze, currentIndex);
                 case "E":
-                    return MoveEast(currentIndex);
+                    return MoveEast(maze, currentIndex);
                 case "S":
-                    return MoveSouth(currentIndex);
+                    return MoveSouth(maze, currentIndex);
                 case "W":
-                    return MoveWest(currentIndex);
+                    return MoveWest(maze, currentIndex);
                 default:
                     throw new InvalidDirectionException($"{direction} is not a valid cardinal direction, expected 'N', 'E', 'S' or 'W'.");
             }
         }
 
-        private static int? MoveNorth(int currentIndex)
+        private static int? MoveNorth(IMaze maze, int currentIndex)
         {
-            if (currentIndex < Maze.Size) return null;
-            else return (currentIndex - Maze.Size);
+            if (currentIndex < maze.Size) return null;
+            else return (currentIndex - maze.Size);
         }
 
-        private static int? MoveEast(int currentIndex)
+        private static int? MoveEast(IMaze maze, int currentIndex)
         {
-            if (currentIndex % Maze.Size == Maze.Size - 1) return null;
+            if (currentIndex % maze.Size == maze.Size - 1) return null;
             else return (currentIndex + 1);
         }
-        private static int? MoveSouth(int currentIndex)
+
+        private static int? MoveSouth(IMaze maze, int currentIndex)
         {
-            if (currentIndex >= Maze.Size * (Maze.Size - 1)) return null;
-            else return (currentIndex + Maze.Size);
+            if (currentIndex >= maze.Size * (maze.Size - 1)) return null;
+            else return (currentIndex + maze.Size);
         }
 
-        private static int? MoveWest(int currentIndex)
+        private static int? MoveWest(IMaze maze, int currentIndex)
         {
-            if (currentIndex % Maze.Size == 0) return null;
+            if (currentIndex % maze.Size == 0) return null;
             else return (currentIndex - 1);
         }
     }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace MazeGenerator
+namespace MazeGeneratorLib
 {
-    class InvalidRoomTypeException : Exception
+    public class InvalidRoomTypeException : Exception
     {
         public InvalidRoomTypeException() { }
         public InvalidRoomTypeException(string message) : base(message) { }
@@ -15,7 +15,7 @@ namespace MazeGenerator
             StreamingContext context) : base(info, context) { }
     }
 
-    class InvalidMazeTypeException : Exception
+    public class InvalidMazeTypeException : Exception
     {
         public InvalidMazeTypeException() { }
         public InvalidMazeTypeException(string message) : base(message) { }
@@ -25,7 +25,7 @@ namespace MazeGenerator
             StreamingContext context) : base(info, context) { }
     }
 
-    class InvalidDirectionException : Exception
+    public class InvalidDirectionException : Exception
     {
         public InvalidDirectionException() { }
         public InvalidDirectionException(string message) : base(message) { }

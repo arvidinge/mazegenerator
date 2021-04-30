@@ -1,4 +1,4 @@
-﻿namespace MazeGenerator
+﻿namespace MazeGeneratorLib
 {
     /// <summary>
     /// Used for integrating with external Treasure Adventure Emulators.

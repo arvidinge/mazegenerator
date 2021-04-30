@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MazeGenerator
+namespace MazeGeneratorLib
 {
     public class MazeIntegration : IMazeIntegration
     {
@@ -15,7 +15,7 @@ namespace MazeGenerator
             if (!Util.IndexInMazeRange(roomId, MazeHandler.Maze.Size)) 
                 throw new IndexOutOfRangeException($"Invalid roomId {roomId} for maze of size {MazeHandler.Maze.Size}.");
 
-            return MazeHandler.TrapCheck(new RandomGenerator(), roomId);
+            return MazeHandler.TrapCheck(new RandomGenerator(), MazeHandler.Maze, roomId);
         }
 
         public string GetDescription(int roomId)
@@ -36,7 +36,7 @@ namespace MazeGenerator
             if (!Util.IndexInMazeRange(roomId, MazeHandler.Maze.Size))
                 throw new IndexOutOfRangeException($"Invalid roomId {roomId} for maze of size {MazeHandler.Maze.Size}.");
 
-            return MazeHandler.TraverseMaze(roomId, direction);
+            return MazeHandler.TraverseMaze(MazeHandler.Maze, roomId, direction);
         }
 
         public bool HasTreasure(int roomId)

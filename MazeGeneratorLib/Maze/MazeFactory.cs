@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MazeGenerator
+namespace MazeGeneratorLib
 {
-    internal class MazeFactory
+    class MazeFactory : IMazeFactory
     {
-        internal static IMaze Create(IRandomGenerator random, MazeType mazeType, int size)
+        public IMaze Create(IRandomGenerator random, MazeType mazeType, int size)
         {
+            if (random is null) throw new ArgumentNullException();
             switch (mazeType)
             {
                 case MazeType.VerySimpleMaze:
@@ -17,5 +18,6 @@ namespace MazeGenerator
                     throw new InvalidMazeTypeException(message: $"Invalid MazeType: {mazeType}");
             }
         }
+
     }
 }

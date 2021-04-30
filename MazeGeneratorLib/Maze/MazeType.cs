@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MazeGenerator
+namespace MazeGeneratorLib
 {
     enum MazeType
     {
