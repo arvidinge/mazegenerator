@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Room\IRoomFactory.cs" />
+    <Compile Include="Maze\IMazeFactory.cs" />
+    <Compile Include="Maze\IMazeGenerator.cs" />
     <Compile Include="IMazeIntegration.cs" />
     <Compile Include="IRandomGenerator.cs" />
     <Compile Include="MazeIntegration.cs" />

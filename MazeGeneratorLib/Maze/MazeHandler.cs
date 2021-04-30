@@ -16,7 +16,7 @@ namespace MazeGeneratorLib
         {
             bool injured = random.Generate() > maze.Rooms[roomId].BehaviourThreshold;
 
-            if (injured) maze.Rooms[roomId].Description = $" {maze.Rooms[roomId].Behaviour}";
+            if (injured) maze.Rooms[roomId].Description += $" {maze.Rooms[roomId].Behaviour}";
             return injured;
         }
 

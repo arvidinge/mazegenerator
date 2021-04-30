@@ -7,6 +7,9 @@ using MazeGeneratorLib;
 
 namespace TestConsoleApp
 {
+    /// <summary>
+    /// Interactive console application for manual testing purposes.
+    /// </summary>
     class Program
     {
         static void Main(string[] args)
