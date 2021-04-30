@@ -6,9 +6,9 @@ namespace MazeGeneratorLib
 {
     static class Util
     {
-        public static bool IndexInMazeRange(int index, int size)
+        public static bool IndexInMazeRange(IMaze maze, int index, int size)
         {
-            return ( index < 0 || index >= (MazeHandler.Maze.Size * MazeHandler.Maze.Size)) ? false : true;
+            return ( index < 0 || index >= (maze.Size * maze.Size)) ? false : true;
         }
     }
 }

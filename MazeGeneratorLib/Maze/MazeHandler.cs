@@ -6,8 +6,6 @@ namespace MazeGeneratorLib
 {
     internal static class MazeHandler
     {
-        public static IMaze Maze { get; private set; }
-
         /// <summary>
         /// Checks wether the treasure hunter gets injured in a room.
         /// </summary>
@@ -27,9 +25,9 @@ namespace MazeGeneratorLib
         /// </summary>
         /// <param name="mazeType">Type of maze to generate.</param>
         /// <param name="size">Width and height of maze dimensions.</param>
-        public static void NewMaze(MazeType mazeType, int size)
+        public static IMaze NewMaze(MazeType mazeType, int size)
         {
-            Maze = new MazeFactory().Create(new RandomGenerator(), mazeType, size);
+            return new MazeFactory().Create(new RandomGenerator(), mazeType, size);
         }
 
         /// <summary>

@@ -210,14 +210,5 @@ namespace MazeGeneratorLib.Tests
 
             Assert.True(result);
         }
-
-        [Fact]
-        public void NewMaze_Invoked_MazeRefIsNotNull()
-        {
-            Assert.Null(MazeHandler.Maze);
-            MazeHandler.NewMaze(MazeType.VerySimpleMaze, mazeSize);
-            Assert.NotNull(MazeHandler.Maze);
-        }
-
     }
 }

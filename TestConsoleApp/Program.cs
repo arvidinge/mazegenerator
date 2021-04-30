@@ -13,9 +13,9 @@ namespace TestConsoleApp
         {
             int mazesize = 3;
             var hej = new MazeIntegration();
-            
+
             hej.BuildMaze(mazesize);
-            for (int i = 0; i < mazesize * mazesize + 1; i++)
+            for (int i = 0; i < mazesize * mazesize; i++)
             {
                 Console.WriteLine($"{hej.GetDescription(i)}");
             }
