@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MazeGeneratorLib
 {
-    interface IMaze
+    internal interface IMaze
     {
         /// <summary>
         /// Width and height of maze dimensions.

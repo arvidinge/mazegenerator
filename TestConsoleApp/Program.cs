@@ -12,12 +12,51 @@ namespace TestConsoleApp
         static void Main(string[] args)
         {
             int mazesize = 3;
-            var hej = new MazeIntegration();
+            var mi = new MazeIntegration();
+            char direction;
+            int currentIndex;
+            int? selectedRoom;
 
-            hej.BuildMaze(mazesize);
-            for (int i = 0; i < mazesize * mazesize; i++)
+            mi.BuildMaze(mazesize);
+            
+            currentIndex = mi.GetEntranceRoom();
+
+            while (true)
             {
-                Console.WriteLine($"{hej.GetDescription(i)}");
+
+                if (mi.HasTreasure(currentIndex))
+                {
+                    Console.WriteLine($"You found the treasure!");
+                    break;
+                }
+                else if (mi.CausesInjury(currentIndex))
+                {
+                    Console.WriteLine(mi.GetDescription(currentIndex));
+                    Console.WriteLine("Game over!");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine($"{mi.GetDescription(currentIndex)}");
+                }
+
+                while (true)
+                {
+                    Console.Write($"Enter a direction: ");
+                    direction = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
+                    Console.WriteLine();
+
+                    selectedRoom = mi.GetRoom(currentIndex, direction);
+
+                    if (selectedRoom == null)
+                    {
+                        Console.WriteLine($"You face a wall, select a different direction.");
+                        continue;
+                    }
+
+                    currentIndex = (int)selectedRoom;
+                    break;
+                }
             }
 
             Console.ReadKey();

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MazeGeneratorLib
 {
-    static class RoomFactory
+    internal class RoomFactory : IRoomFactory
     {
-        public static IRoom Create(RoomType roomType)
+        public IRoom Create(RoomType roomType)
         {
             switch (roomType)
             {

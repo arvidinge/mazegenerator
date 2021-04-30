@@ -5,21 +5,16 @@ using System.Text;
 
 namespace MazeGeneratorLib
 {
-    static class MazeGenerator
+    internal class MazeGenerator : IMazeGenerator
     {
-
-        /// <summary>
-        /// Generates a random layout of rooms in a square grid, and selects start and treasure room indexes.
-        /// </summary>
-        /// <param name="size">Width and height of maze dimensions.</param>
-        /// <returns>The grid of rooms, the start room index, the end (treasure) room index.</returns>
-        internal static (IRoom[], int, int) GenerateMaze(IRandomGenerator random, int gridsize)
+        public (IRoom[], int, int) GenerateMaze(IRandomGenerator random, int gridsize)
         {
             IRoom[] rooms = new IRoom[gridsize * gridsize];
+            IRoomFactory rf = new RoomFactory();
 
             var (startIndex, endIndex) = GetStartAndEndIndexes(random, gridsize);
-            rooms[startIndex] = RoomFactory.Create(GetRandomSafeRoomType(random)); 
-            rooms[endIndex] = RoomFactory.Create(GetRandomSafeRoomType(random));
+            rooms[startIndex] = rf.Create(GetRandomSafeRoomType(random)); 
+            rooms[endIndex] = rf.Create(GetRandomSafeRoomType(random));
 
             // List of all roomtypes.
             RoomType[] roomTypes = (RoomType[])Enum.GetValues(typeof(RoomType));
@@ -27,23 +22,17 @@ namespace MazeGeneratorLib
             for (int i = 0; i < rooms.Length; i++)
             {
                 if (i == startIndex || i == endIndex) continue;
-                rooms[i] = RoomFactory.Create(roomTypes[random.Generate(0, roomTypes.Length)]); // Place a room of random type on the index.
+                rooms[i] = rf.Create(roomTypes[random.Generate(0, roomTypes.Length)]); // Place a room of random type on each index.
             }
 
             return (rooms, startIndex, endIndex);
         }
 
-        /// <summary>
-        /// Given a grid size, select a start and end index at random. <br/>
-        /// The start index falls along the grid's edge, and the end index is anywhere but the start index.
-        /// </summary>
-        /// <param name="gridsize">Width and height of grid dimensions.</param>
-        /// <returns>The start and end indexes.</returns>
-        internal static (int, int) GetStartAndEndIndexes(IRandomGenerator random, int gridsize)
+        public (int, int) GetStartAndEndIndexes(IRandomGenerator random, int gridsize)
         {
             List<int> edgeIndexes = GetGridEdgeIndexes(gridsize);
-            int startIndex = edgeIndexes[random.Generate(0, edgeIndexes.Count)]; // Select a random index on the EDGE of the maze as the start room.
-            int endIndex = random.Generate(0, gridsize * gridsize); // Select a random index anywhere in the maze as the end room.
+            int startIndex = edgeIndexes[random.Generate(0, edgeIndexes.Count - 1)]; // Select a random index on the EDGE of the maze as the start room.
+            int endIndex = random.Generate(0, gridsize * gridsize - 1); // Select a random index anywhere in the maze as the end room.
 
             if (startIndex == endIndex)
             {
@@ -53,31 +42,22 @@ namespace MazeGeneratorLib
             return (startIndex, endIndex);
         }
 
-        /// <summary>
-        /// Selects a random <see cref="RoomType"/> which has a BehaviourThreshold of 1 (has no traps).
-        /// </summary>
-        /// <returns>A safe <see cref="RoomType"/>.</returns>
-        internal static RoomType GetRandomSafeRoomType(IRandomGenerator random)
+        public RoomType GetRandomSafeRoomType(IRandomGenerator random)
         {
+            IRoomFactory rf = new RoomFactory();
             RoomType[] roomTypes = (RoomType[])Enum.GetValues(typeof(RoomType));
             List<RoomType> safeTypes = new List<RoomType>();
 
             foreach (var type in roomTypes)
             {
-                var room = RoomFactory.Create(type);
+                var room = rf.Create(type);
                 if (room.BehaviourThreshold == 1) safeTypes.Add(type);
             }
 
             return safeTypes[random.Generate(0, safeTypes.Count)];
-
         }
 
-        /// <summary>
-        /// Given a grid size, return all indexes that fall on an edge of the grid.
-        /// </summary>
-        /// <param name="gridsize">Width and height of grid dimensions.</param>
-        /// <returns>A list of indexes.</returns>
-        internal static List<int> GetGridEdgeIndexes(int gridsize)
+        public List<int> GetGridEdgeIndexes(int gridsize)
         {
             List<int> edgeIndexes = new List<int>();
 

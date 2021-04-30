@@ -6,7 +6,7 @@ namespace MazeGeneratorLib
 {
     class RandomGenerator : IRandomGenerator
     {
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
 
         public double Generate()
         {

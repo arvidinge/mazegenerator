@@ -16,7 +16,7 @@ namespace MazeGeneratorLib
         {
             bool injured = random.Generate() > maze.Rooms[roomId].BehaviourThreshold;
 
-            if (injured) maze.Rooms[roomId].Description += $" {maze.Rooms[roomId].Behaviour}";
+            if (injured) maze.Rooms[roomId].Description = $" {maze.Rooms[roomId].Behaviour}";
             return injured;
         }
 
@@ -27,7 +27,10 @@ namespace MazeGeneratorLib
         /// <param name="size">Width and height of maze dimensions.</param>
         public static IMaze NewMaze(MazeType mazeType, int size)
         {
-            return new MazeFactory().Create(new RandomGenerator(), mazeType, size);
+            IMazeFactory mf = new MazeFactory();
+            IRandomGenerator rg = new RandomGenerator();
+
+            return mf.Create(rg, mazeType, size);
         }
 
         /// <summary>

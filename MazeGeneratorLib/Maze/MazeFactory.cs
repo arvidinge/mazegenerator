@@ -12,7 +12,7 @@ namespace MazeGeneratorLib
             switch (mazeType)
             {
                 case MazeType.VerySimpleMaze:
-                    var (rooms, startIndex, endIndex) = MazeGenerator.GenerateMaze(random, size);
+                    var (rooms, startIndex, endIndex) = new MazeGenerator().GenerateMaze(random, size);
                     return new VerySimpleMaze(size, rooms, startIndex, endIndex);
                 default:
                     throw new InvalidMazeTypeException(message: $"Invalid MazeType: {mazeType}");

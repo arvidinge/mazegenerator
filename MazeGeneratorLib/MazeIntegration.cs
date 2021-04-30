@@ -4,8 +4,10 @@ namespace MazeGeneratorLib
 {
     public class MazeIntegration : IMazeIntegration
     {
-        // Ugly to keep state in a library but not sure how to solve it given the interface
-        internal static IMaze Maze;
+        // If subsequent calls related to the same run of the maze aren't necessarily
+        // made to the same instance of this class by the consumer, this Maze
+        // variable must be made static.
+        internal IMaze Maze;
 
         public void BuildMaze(int size)
         {
@@ -15,7 +17,7 @@ namespace MazeGeneratorLib
 
         public bool CausesInjury(int roomId)
         {
-            if (!Util.IndexInMazeRange(Maze, roomId, Maze.Size)) 
+            if (!Util.IndexInMazeRange(Maze, roomId)) 
                 throw new IndexOutOfRangeException($"Invalid roomId {roomId} for maze of size {Maze.Size}.");
 
             return MazeHandler.TrapCheck(new RandomGenerator(), Maze, roomId);
@@ -23,7 +25,7 @@ namespace MazeGeneratorLib
 
         public string GetDescription(int roomId)
         {
-            if (!Util.IndexInMazeRange(Maze, roomId, Maze.Size))
+            if (!Util.IndexInMazeRange(Maze, roomId))
                 throw new IndexOutOfRangeException($"Invalid roomId {roomId} for maze of size {Maze.Size}.");
 
             return Maze.Rooms[roomId].Description;
@@ -36,7 +38,7 @@ namespace MazeGeneratorLib
 
         public int? GetRoom(int roomId, char direction)
         {
-            if (!Util.IndexInMazeRange(Maze, roomId, Maze.Size))
+            if (!Util.IndexInMazeRange(Maze, roomId))
                 throw new IndexOutOfRangeException($"Invalid roomId {roomId} for maze of size {Maze.Size}.");
 
             return MazeHandler.TraverseMaze(Maze, roomId, direction);
@@ -44,7 +46,7 @@ namespace MazeGeneratorLib
 
         public bool HasTreasure(int roomId)
         {
-            if (!Util.IndexInMazeRange(Maze, roomId, Maze.Size))
+            if (!Util.IndexInMazeRange(Maze, roomId))
                 throw new IndexOutOfRangeException($"Invalid roomId {roomId} for maze of size {Maze.Size}.");
 
             return roomId == Maze.EndIndex ? true : false;
